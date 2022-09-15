@@ -1,39 +1,43 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">JuegosLaplu</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" aria-current="page" [routerLink]="['home']">Inicio</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" [routerLink]="['quienSoy']">Quien Soy</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" [routerLink]="['login']">Ingresar</a>
-          </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Más
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li> -->
-          <!-- <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li> -->
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="..." aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-      </div>
+<nav class="navbar navbar-expand-sm  navbar-dark bg-dark  align-items-center" >
+  <div class="container-fluid ">
+    <!-- <img src="../../../assets/logo-nav.png" alt="Bootstrap" width="30" height="30" >  -->
+    <!-- <img src="../../../assets/logo-nav.png" style="width:5%; height:5%" >  -->
+    <a class="navbar-brand" href="#">JuegosLaplu</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" aria-current="page" [routerLink]="['../../home']">Inicio</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['quienSoy']">Quien Soy</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Acceso
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li *ngIf="this.user == undefined && this.user == null">
+              <a class="dropdown-item" routerLink="../../auth/acceso">Iniciar sesión</a>
+            </li>
+            <li *ngIf="this.user == undefined && this.user == null">
+              <a class="dropdown-item" routerLink="../../auth/registro">Registrarse</a>
+            </li>
+            
+            <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" routerLink="../../auth/recuperoContraseña">Olvidé mi contraseña</a></li>
+          </ul>
+
+        </li>
+      </ul>
+      <form class="d-flex">
+        <!-- <input class="form-control me-2" type="search" placeholder="..." aria-label="Search"> -->
+        <!-- <a class="btn btn-outline-dark"  [routerLink]="['login']">Iniciar Sesión</a>
+        <a class="btn btn-outline-dark"  [routerLink]="['login']">Registrarse</a> -->
+        <!-- <button class="btn btn-outline-warning ms-2" type="submit">Registrarse</button> -->
+      </form>
     </div>
-  </nav>
+  </div>
+</nav>

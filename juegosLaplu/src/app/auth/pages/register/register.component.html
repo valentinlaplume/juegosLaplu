@@ -1,0 +1,48 @@
+<div class="text-center">
+  <main class="form-signin w-100 m-auto">
+    <form >
+      <img class="mb-4" src="../../../../assets/logo-nav.png" alt="logo-app" width="72" height="57">
+      <div class="form-floating mb-2">
+        <input 
+        type="email"
+        [(ngModel)]="this.email"
+        name="email"
+        required="required"
+        class="form-control"  
+        placeholder="nombre@ejemplo.com"
+        >
+        <label for="floatingInput">Mail</label>
+      </div>
+
+      <div class="form-floating mb-2">
+        <input 
+        type="password"
+        class="form-control" 
+        [(ngModel)]="this.password"
+        name="password"
+        placeholder="Password"
+        required="required"
+        >
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+      
+      <div class="form-floating mb-4">
+        <input 
+        type="password"
+        class="form-control" 
+        [(ngModel)]="this.passwordConfirm"
+        name="passwordConfirm"
+        placeholder="passwordConfirm"
+        required="required"
+        >
+        <label for="floatingPassword">Confirma Contraseña</label>
+      </div>
+
+      <!-- <div *ngIf="this.textValidPassword != ''" class="alert alert-danger" role="alert" [(ngModel)]="this.textValidPassword" >
+        <p value={this.textValidPassword}>{"this.textValidPassword"}</p>
+      </div>
+       -->
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="register()">Registrarse</button>
+    </form>
+  </main>
+</div>

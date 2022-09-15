@@ -4,21 +4,28 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuNavComponent } from './components/menu-nav/menu-nav.component';
-import { LoginComponent } from './pages/login/login.component';
-import { HomeComponent } from './pages/home/home.component';
-import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { FormsModule } from '@angular/forms';
+
+//modulos
+import { AuthModule } from './auth/auth.module';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuNavComponent,
-    LoginComponent,
-    HomeComponent,
-    QuienSoyComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    FormsModule,
+    AuthModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
