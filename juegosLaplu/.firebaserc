@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "labo4-27bce"
+  },
+  "targets": {
+    "labo4-27bce": {
+      "hosting": {
+        "juegosLaplu": [
+          "juegoslaplu"
+        ]
+      }
+    }
   }
 }

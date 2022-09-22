@@ -25,8 +25,11 @@
                 >
                 <label for="floatingPassword">Contraseña</label>
             </div>
+            <div class="form-floating mb-4">
+                <span class="text-danger">{{this.msjError}}</span>
+            </div>
             <button class="w-100 btn btn-lg btn-primary mb-1" type="submit" (click)="login()">Iniciar sesión</button>
-            <button class="w-100 btn btn-lg btn-dark" type="submit" (click)="userA()">User 1</button>
+            <button class="w-100 btn btn-lg btn-dark" type="submit" (click)="userA()">Usuario de prueba</button>
         </form>
     </main>
 

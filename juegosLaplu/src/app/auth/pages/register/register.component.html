@@ -1,24 +1,35 @@
 <div class="text-center">
   <main class="form-signin w-100 m-auto">
-    <form >
+    <form [formGroup]="this.formulario" >
       <img class="mb-4" src="../../../../assets/logo-nav.png" alt="logo-app" width="72" height="57">
+      <!-- <div class="form-floating mb-2">
+        <input 
+        type="text"
+        name="displayName"
+        formControlName="displayName"
+        required="required"
+        class="form-control"  
+        placeholder="usuario1"
+        >
+        <label for="floatingInput">Nombre de Usuario</label>
+      </div> -->
       <div class="form-floating mb-2">
         <input 
         type="email"
-        [(ngModel)]="this.email"
         name="email"
+        formControlName="email"
         required="required"
         class="form-control"  
         placeholder="nombre@ejemplo.com"
         >
-        <label for="floatingInput">Mail</label>
+        <label for="floatingInput">Correo Electrónico</label>
       </div>
 
       <div class="form-floating mb-2">
         <input 
         type="password"
         class="form-control" 
-        [(ngModel)]="this.password"
+        formControlName="password"
         name="password"
         placeholder="Password"
         required="required"
@@ -30,19 +41,17 @@
         <input 
         type="password"
         class="form-control" 
-        [(ngModel)]="this.passwordConfirm"
+        formControlName="passwordConfirm"
         name="passwordConfirm"
         placeholder="passwordConfirm"
         required="required"
         >
         <label for="floatingPassword">Confirma Contraseña</label>
       </div>
-
-      <!-- <div *ngIf="this.textValidPassword != ''" class="alert alert-danger" role="alert" [(ngModel)]="this.textValidPassword" >
-        <p value={this.textValidPassword}>{"this.textValidPassword"}</p>
+      <div class="form-floating mb-4">
+        <span class="text-danger">{{this.msjError}}</span>
       </div>
-       -->
-      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="register()">Registrarse</button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="onSubmit()">Registrarse</button>
     </form>
   </main>
 </div>

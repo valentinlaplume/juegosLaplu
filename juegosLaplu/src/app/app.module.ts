@@ -13,6 +13,13 @@ import { FormsModule } from '@angular/forms';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 
+import { provideFirestore } from '@angular/fire/firestore';
+import { getFirestore } from '@firebase/firestore';
+// import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
+import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+import { JuegosModule } from './juegos/juegos.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,11 +28,16 @@ import { HomeModule } from './home/home.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
     FormsModule,
+    // provideFirebaseApp(() => initializeApp(environment.firebase)),
+    // provideFirestore( () => getFirestore()),
+    // provideAuth(() => getAuth()),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    HttpClientModule,
     AuthModule,
-    HomeModule
+    HomeModule,
+    JuegosModule
   ],
   providers: [],
   bootstrap: [AppComponent]

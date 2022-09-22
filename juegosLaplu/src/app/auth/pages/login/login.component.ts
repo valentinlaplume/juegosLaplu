@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,40 +9,37 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public email:string;
-  public password:string;
+  public email!:string;
+  public password!:string;
   public user:any;
+  public msjError!: string;
+
 
   constructor(
-    private userService: UserService,
+    private authSvc: AuthService,
     public router: Router
-  ) { 
-    this.email = '';
-    this.password = ''
-  }
+  ) { }
 
   ngOnInit(): void {}
 
-  login(){
+  async login(){
     const arg = {email: this.email, password: this.password};
-    console.log(arg);
+    
+    const res = await this.authSvc.login(this.email, this.password);
 
-    this.userService.login(arg)
-    .then((res: any) => {
-      console.log(res);
-      console.log(res.user);
-      this.user = res.user;
-      this.router.navigateByUrl('home');
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
+    if(this.authSvc.msjError != "")
+      this.msjError = this.authSvc.msjError;
+    else
+    {
+      this.msjError = '';
+      this.router.navigate(['home']);
+    }
   }
 
   async logout():Promise<void>{
     try {
-      console.log(this.userService.logout());
-      this.router.navigateByUrl('auth/login');
+      console.log(this.authSvc.logout());
+      this.router.navigate(['login']);
     } catch (error) {
       console.log('Error->', error);
     }
