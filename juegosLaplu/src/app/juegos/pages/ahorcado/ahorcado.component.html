@@ -1,1 +1,32 @@
-<p>ahorcado works!</p>
+<!-- <div class="container text-center">
+    <h1 class="mt-3">AHORCADO</h1>
+    <div class="container d-flex justify-content-start p-2">
+        <img src="../../../../assets/ahorcado/1.jpg"  alt="imagen-ahorcado">
+    </div>
+    <div>
+       <label class="float-end">{{palabraAdivinar}}</label> 
+    </div>
+
+</div> -->
+<div class="container">
+    <h1 class="mt-3 text-center">AHORCADO</h1>
+    <div class="d-flex">
+        <div class="p-2 flex-sm-grow-0 contenedor-img">
+            <img src="../../../../assets/ahorcado/{{numeroErrorImg}}.jpg"  alt="imagen-ahorcado">
+        </div>
+
+        <div class="p-2 flex-sm-grow-1 contenedor-palabraEnGuiones">
+            <label class="">{{palabraEnGuiones}}</label> 
+        </div>
+    </div>
+    <div class="container text-center">
+        <input type="button" *ngFor="let letra of letras" class="btn alert-primary col-sm-1 text-center m-lg-1" (click)="onLetra(letra)" value="{{letra}}">
+    </div>
+    
+    <div class="container text-center mt-2">
+        <button class="w-50 btn btn-lg btn-secondary mb-1" type="submit" (click)="setearJuego()">Reiniciar</button>
+    </div>
+
+</div>
+
+

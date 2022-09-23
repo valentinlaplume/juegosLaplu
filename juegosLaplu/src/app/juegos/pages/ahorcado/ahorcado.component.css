@@ -1,0 +1,21 @@
+img{
+    width: 100%;
+    height: auto;
+}
+
+
+.contenedor-img{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-palabraEnGuiones{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
+}
+

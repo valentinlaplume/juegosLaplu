@@ -40,14 +40,11 @@ export class ChatComponent implements OnInit
       this.cargarMensajes();
     }
     
-    ngOnInit(): void {
-    }
-
+    ngOnInit(): void { }
 
     async cargarMensajes(){
       this.listaMensajes = [];
-      this.chatSvc.getMensajes()
-      .subscribe((res:any) => {
+      this.chatSvc.getMensajes().subscribe((res:any) => {
         this.listaMensajes = res;
         console.log(this.listaMensajes);
       });
@@ -55,6 +52,7 @@ export class ChatComponent implements OnInit
 
     enviar(){
       let msj = new ChatMensaje();
+
       msj.idUsuario = this.idUsuarioLogeado;
       msj.emailUsuario = this.mailUsuarioLogeado;
       msj.fecha = new Date().toLocaleString();

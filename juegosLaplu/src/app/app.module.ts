@@ -7,7 +7,7 @@ import { MenuNavComponent } from './components/menu-nav/menu-nav.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //modulos
 import { AuthModule } from './auth/auth.module';
@@ -29,6 +29,7 @@ import { JuegosModule } from './juegos/juegos.module';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule, // validador de formulario
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
     // provideFirestore( () => getFirestore()),
     // provideAuth(() => getAuth()),
