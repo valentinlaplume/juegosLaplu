@@ -1,1 +1,21 @@
-<p>mayor-omenor works!</p>
+<div class="container text-center">
+    <h1 class="mt-3">Mayor o Menor</h1>
+    <div class="container text-center container-img">
+        <img *ngIf="numCartaAntes != ''" src="../../../../assets/cartas/{{numCartaAntes}}.png" class="img-fluid img-antes " alt="carta-{{numCartaAntes}}">
+        <img src="../../../../assets/cartas/{{numCarta}}.png" [className]="cambioCarta ? 'img-fluid img-ahora img-animacion-cambio' : 'img-fluid img-ahora img-animacion-cambio-2'"  alt="carta-{{numCarta}}">
+    </div>
+    <div *ngIf="this.msjAccion" [className]="this.adivino ? 'alert alert-success' : 'alert alert-danger'" role="alert">
+        {{this.msjAccion}}
+    </div>
+    <div class="container-button text-center">
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-success" type="button" (click)="onMayor()">MAYOR</button>
+            <button class="btn btn-danger" type="button" (click)="onMenor()">MENOR</button>
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+</style>

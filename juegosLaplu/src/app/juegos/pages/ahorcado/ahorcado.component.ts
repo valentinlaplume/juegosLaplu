@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ahorcado.component.css']
 })
 export class AhorcadoComponent implements OnInit {
-  
+  adivino:boolean = false;
+  msjAccion:string='';
   letras!:string[]; 
 
-  palabrasAdivinar = ['auto', 'mate', 'mesa', 'programador', 'perro'];
+  palabrasAdivinar = ['futbol', 'mate', 'auto', 'programador', 'celular', 'computadora', 'mouse', 'gimnasio', 'universidad', 'trabajo'];
   palabraEnLetras:string = '';
   palabraEnGuiones:string = '';
   numeroErrorImg:number = 1;
@@ -34,8 +35,14 @@ export class AhorcadoComponent implements OnInit {
   private setearPalabra(){
     this.palabraEnGuiones = '';
     this.palabraEnLetras = '';
+
+    let indexBefore =  this.indicePalabra;
     this.indicePalabra = Math.floor(Math.random()*this.palabrasAdivinar.length);
-    console.log(this.indicePalabra);
+    while (indexBefore == this.indicePalabra) {
+      this.indicePalabra = Math.floor(Math.random()*this.palabrasAdivinar.length);
+    }
+
+    console.log('setearPalabra -> ', this.indicePalabra);
     this.convertirpalabraEnLetras(this.palabrasAdivinar[this.indicePalabra]);
   }
 
@@ -64,7 +71,7 @@ export class AhorcadoComponent implements OnInit {
 
   onLetra(letraElegida:string){
     console.log('APRETA ->', letraElegida.toLocaleLowerCase());
-
+    this.msjAccion = '';
     let arrEnGuiones = this.palabraEnGuiones.split(" ");
     let arrEnLetras = this.palabraEnLetras.split(" ");
 
@@ -85,12 +92,21 @@ export class AhorcadoComponent implements OnInit {
   private actualizarEstadoJuego(sumaNoEsLetra:number, lenPabraEnGuiones:number){
     if(sumaNoEsLetra == lenPabraEnGuiones){ 
       this.sumarErrorImg(); 
-      if(this.numeroErrorImg == 7) { alert("PERDISTE!!!!! la palabra era: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase()); this.setearJuego(); return; }
+      if(this.numeroErrorImg == 7) { 
+        this.adivino = false; 
+        this.msjAccion = "PERDISTE, PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
+        this.setearJuego(); 
+        return; 
+      }
     }
 
     console.log(this.palabraEnGuiones)
     if(!this.palabraEnGuiones.includes('_')) 
-    { alert("GANASTE!!!!! la palabra es: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase()); this.setearJuego(); }
+    { 
+      this.adivino = true; 
+      this.msjAccion = "GANASTE, PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
+      this.setearJuego(); 
+    }
   }
 
   replaceAt(i: number, letra: string) {

@@ -1,14 +1,18 @@
 img{
-    width: 100%;
-    height: auto;
+    width: 50%;
+    height: 90%;
 }
 
+.container-teclado{
+    margin: 10px 0px;
+}
 
 .contenedor-img{
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .contenedor-palabraEnGuiones{
@@ -16,6 +20,23 @@ img{
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
-    font-size: 4em;
+    font-size: xx-large;
+    width: 100%;
+    /* font-size: 4em; */
 }
 
+.container-medio{
+    display: flex;
+}
+
+@media (max-width: 800) {
+    .container-medio{
+        display: inline-block;
+    }
+    .contenedor-palabraEnGuiones{
+        display: inline-block;
+        font-size: 15px;
+        border: 5px solid black;
+        background-color: aquamarine;
+    }
+}
