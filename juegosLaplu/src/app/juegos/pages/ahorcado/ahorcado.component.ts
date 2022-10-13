@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Puntaje } from 'src/app/shared/puntaje';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { PuntajeService } from "../../../services/puntaje.service";
 @Component({
@@ -8,7 +8,7 @@ import { PuntajeService } from "../../../services/puntaje.service";
   templateUrl: './ahorcado.component.html',
   styleUrls: ['./ahorcado.component.css']
 })
-export class AhorcadoComponent implements OnInit {
+export class AhorcadoComponent implements OnInit, OnDestroy {
   adivino:boolean = false;
   letras!:string[]; 
   comenzo:boolean = false;
@@ -30,36 +30,56 @@ export class AhorcadoComponent implements OnInit {
   idUsuarioLogeado:string = '';
 
   // tiempo de juego general
-  segundosGral:number = 5;
+  segundosGral:number = 30;
   tiempoGral:number = 0;
   intervalGral:any;
 
   puntajes!:Puntaje[];
+  puntajesTop!:Puntaje[];
   public usuario$: Observable<any> = this.authService.afAuth.user;
+  suscripciones!:Subscription[]; 
 
   constructor(
     public authService: AuthService,
     public puntajeService: PuntajeService
     ) 
   {
-    this.puntajeService.cargarPuntajesAhorcado();
+    this.suscripciones = [];
+    this.cargarPuntajes();
+
     this.usuario$.subscribe(res => {
       this.mailUsuarioLogeado = res['email'];
       this.idUsuarioLogeado = res['uid'];
     });
+
+    // this.puntajeService.getPuntajes(this.puntajeService.collectionAhorcado);
     
-    this.cargarPuntajes();
   }
 
 cargarPuntajes()
 {
-  this.puntajes = []; 
-  this.puntajeService.puntajes.subscribe(puntaje => {
-    this.puntajes = puntaje;
-  })
+  this.suscripciones.push(this.puntajeService.cargarPuntajesAhorcado().subscribe(snapshot => {
+    this.puntajes = [];
+    this.puntajesTop = [];
+    snapshot.forEach((item: any) => {
+      const data = item.payload.doc.data() as Puntaje;
+      data.id = item.payload.doc.id;
+      this.puntajes.push(data);
+      if(this.puntajes.length > 0){
+        this.puntajesTop = this.puntajes.slice(0, 10);
+      }
+    })
+  }))
 }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+  }
+
+  ngOnDestroy(): void {
+    this.suscripciones.forEach(observable =>{
+      observable.unsubscribe();
+    })
+  }
 
   comenzar(){
     this.tiempoGral = this.segundosGral;

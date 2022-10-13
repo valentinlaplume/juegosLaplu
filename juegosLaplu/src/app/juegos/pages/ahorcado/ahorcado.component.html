@@ -30,7 +30,9 @@
         <button [className]="'btn btn-success btn-respuesta'" (click)="comenzar()">Comenzar</button>
     </div>
 
+    <h3 *ngIf="!this.comenzo" class="mt-3 text-center">Los 10 mejores puntajes</h3>
     <table *ngIf="!this.comenzo" class="table table-bordered table-striped mb-0" style="margin-top:10px">
+        
         <thead class="">
             <tr class="table-dark">
                 <th scope="col">Usuario</th>

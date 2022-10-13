@@ -26,14 +26,12 @@ export class PuntajeService {
     public afAuth: AngularFireAuth) 
   {
 
-    
   }
 
   getPuntajes(collection: AngularFirestoreCollection){
     this.puntajes = collection.snapshotChanges().pipe(
       map(actions => actions.map(a => a.payload.doc.data() as Puntaje))
     );
-    console.log(this.puntajes);
  }
 
   cargarPuntajesMayorOMenor(){

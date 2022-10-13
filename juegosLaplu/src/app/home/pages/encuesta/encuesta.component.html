@@ -1,0 +1,123 @@
+<div class="container">
+    <div class="text-center">
+        <h1>ENCUESTA</h1>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="enviar()">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" formControlName="nombre">
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('nombre')?.hasError('required') && formulario.get('nombre')?.touched">
+                El Nombre es requerido.
+            </span>
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('nombre')?.hasError('tieneEspacio') && formulario.get('nombre')?.touched">
+                El Nombre no debe contener espacios.
+            </span>
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" formControlName="apellido">
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('apellido')?.hasError('required') && formulario.get('apellido')?.touched">
+                El Apellido es requerido.
+            </span>
+        </div>
+        <div class="mb-3">
+            <label for="edad" class="form-label">Edad</label>
+            <input type="number" class="form-control" id="edad" formControlName="edad">
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('edad')?.hasError('required') && formulario.get('edad')?.touched">
+                La Edad es requerida.
+            </span>
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('edad')?.hasError('min') && formulario.get('edad')?.touched">
+                La Edad mínima es 18 años.
+            </span>
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('edad')?.hasError('max') && formulario.get('edad')?.touched">
+                La Edad maxima es 99 años.
+            </span>
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Telefono</label>
+            <input type="text" class="form-control" id="telefono" formControlName="telefono">
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('telefono')?.hasError('required') && formulario.get('telefono')?.touched">
+                El Telefono es requerido.
+            </span>
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('telefono')?.hasError('telefonoLength') && formulario.get('telefono')?.touched">
+                El telefono debe tener máximo 10 caracteres.
+            </span>
+            <span class="form-text text-danger"
+                *ngIf="formulario.get('telefono')?.hasError('telefonoNumerico') && formulario.get('telefono')?.touched">
+                El telefono debe se numerico.
+            </span>
+        </div>
+        <br>
+        <!-- Pregunta 1-->
+        <div class="row">
+            <div class="col-12">
+                <label class="form-label">¿Qué juego No te gusto?</label>
+            </div>
+            <div class="col-12">
+                <select class="custom-select custom-select-lg mb-3" formControlName="pregUno">
+                    <option selected value="">Selecciona una opción</option>
+                    <option value="ahorcado">Ahorcado</option>
+                    <option value="flechas">Flechas</option>
+                    <option value="mayoromenor">Mayor o Menor</option>
+                    <option value="preguntados">Preguntados</option>
+                </select>
+
+                <span class="text-danger"
+                    *ngIf="formulario.get('pregUno')?.hasError('required') && formulario.get('pregUno')?.touched">Debes
+                    seleccionar una opción.</span>
+            </div>
+        </div>
+        <br>
+        <!-- Pregunta 2-->
+        <div class="row">
+            <div class="col-12">
+                <label for="pregDos" class="form-label">¿Qué mejoras nos recomendas?</label>
+                <input type="text" class="form-control" id="pregDos" formControlName="pregDos">
+                <span class="text-danger"
+                    *ngIf="formulario.get('pregDos')?.hasError('required') && formulario.get('pregDos')?.touched">Debes
+                    contestar la pregunta.</span>
+            </div>
+        </div>
+        <br>
+        <!-- Pregunta 3-->
+        <div class="row">
+            <div class="col-12">
+                <label class="form-label">¿Volverías a visitar nuestra página?</label>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="pregTresSi" value="si"
+                            formControlName="pregTres">
+                    </div>
+                </div>
+                <label class="form-check-label" for="pregTresSi"> SI </label>
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="pregTresNo" value="no"
+                            formControlName="pregTres">
+                    </div>
+                </div>
+                <label class="form-check-label" for="pregTresNo"> NO </label>
+                <span class="text-danger"
+                    *ngIf="formulario.get('pregTres')?.hasError('required') && formulario.get('pregTres')?.touched">Debes
+                    seleccionar una opción.</span>
+            </div>
+        </div>
+
+
+        <br>
+        <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Enviar</button>
+    </form>
+</div>
