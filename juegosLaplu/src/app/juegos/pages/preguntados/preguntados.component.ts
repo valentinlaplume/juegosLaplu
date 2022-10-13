@@ -1,7 +1,7 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { observable, Subscription } from 'rxjs';
-import { CocktailService } from "../../services/cocktail.service";
+import { CocktailService } from "../../../services/cocktail.service";
 
 @Component({
   selector: 'app-preguntados',
@@ -15,7 +15,7 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
 
   msjAccion:string='';
   adivino:boolean = false;
-  termino:boolean;
+  comenzo:boolean = false;
   spinner:boolean = false;;
 
   pathImg:string='';
@@ -25,46 +25,62 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
 
   listSubscription!:Subscription[]; 
   puntos:number=0;
-  pregunta:number=0;
   msjPuntos:string='';
+  pause:boolean = false;
+  // tiempo de juego general
+  segundosGral:number = 60;
+  tiempoGral:number = 0;
+  intervalGral:any;
 
   constructor(public cocktailService:CocktailService) { 
-    this.termino = false;
   }
-
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy preguntados');
     this.finalizar();
-  }
-
-  finalizar(){
-    this.msjPuntos = 'Has conseguido '+this.puntos+'/15 puntos';
-    this.listCocktail = [];
-    this.pregunta = 0;
-    this.puntos = 0;
-    this.pathImg = '';
-    this.pauseTimer();
-    this.listSubscription.forEach(observable =>{
-      observable.unsubscribe();
-      console.log('unsubscribe de ',this.listSubscription.length);
-    })
   }
 
   comenzar(){
     this.msjPuntos = '';
-    this.pregunta = 1;
     this.spinner = false;
-    this.termino = false;
+    this.comenzo = true;
     this.msjAccion = '';
     this.getCocktailRandom();
     this.addNameCocktailRandom();
-    this.pauseTimer();
-    this.onCronometro();
+    // this.onCronometro();
   }
+
+  pauseTimer(interval:any) {
+    clearInterval(interval);
+  }
+  onCronometro(){
+    this.tiempoGral = this.segundosGral;
+    this.intervalGral = setInterval(() => {
+      if(this.tiempoGral == 0)
+      {
+        this.finalizar();
+      }
+      else{
+        this.tiempoGral--;
+      }
+    }, 1000);
+  }
+
+  finalizar(){
+    this.comenzo = false;
+    this.msjPuntos = 'Has conseguido '+this.puntos+'/15 puntos';
+    this.listCocktail = [];
+    this.puntos = 0;
+    this.pathImg = '';
+    this.pauseTimer(this.intervalGral);
+    this.listSubscription.forEach(observable =>{
+      observable.unsubscribe();
+    })
+  }
+
+
 
   async getCocktailRandom(){
     this.listCocktail = [];
@@ -75,6 +91,7 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
       this.cocktail = item['drinks'][0];
       this.pathImg = this.cocktail['strDrinkThumb'];
       this.respuesta = this.cocktail['strDrink'];
+      console.log('respuesta ->', this.respuesta)
       this.listCocktail.push(this.cocktail);
     },
     (error: any) => { 
@@ -101,9 +118,9 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
     this.listSubscription.push(
     this.cocktailService.getCocktailRandom().subscribe((item:any) => {
       this.listCocktail.push(item['drinks'][0]);
+      this.desordenarRespuestas();
     }));
 
-    this.desordenarRespuestas();
     this.onCronometro();
   }
 
@@ -119,8 +136,8 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
       this.msjAccion = 'INCORRECTA';
     }
 
-    this.pauseTimer();
-    this.termino = true;
+    this.pauseTimer(this.intervalGral);
+    this.pause = true;
 
     this.getOtraPregunta();
   }
@@ -133,44 +150,21 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
     
     setTimeout(() => {
       this.spinner = false;
-      this.termino = false;
+      this.pause = false;
       this.msjAccion = '';
-
-      this.pregunta++;
-      console.log('getOtraPregunta', this.pregunta);
-      if(this.pregunta == 4) { this.finalizar(); return; }
 
       this.getCocktailRandom();
       this.addNameCocktailRandom();
-      this.pauseTimer();
+      this.pauseTimer(this.intervalGral);
       this.onCronometro();
     }, 3000);
   }
 
+
+
   desordenarRespuestas()
   {
     this.listCocktail.sort(function (){return Math.random() - 0.5} );
-  }
-
-  onCronometro(){
-    this.tiempo = this.segundos;
-    this.interval = setInterval(() => {
-      if(this.tiempo == 0)
-      {
-        this.adivino = false;
-        this.msjAccion = 'SIN TIEMPO';
-        this.termino = true;
-        this.pauseTimer();
-        this.getOtraPregunta();
-      }
-      else{
-        this.tiempo--;
-      }
-    }, 1000);
-  }
-
-  pauseTimer() {
-    clearInterval(this.interval);
   }
 
 }

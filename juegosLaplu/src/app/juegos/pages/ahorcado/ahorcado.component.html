@@ -1,24 +1,55 @@
 <div class="container text-center">
     <h1 class="mt-3">AHORCADO</h1>
-    <div class="container-medio">
-        <div class="contenedor-img">
-            <img src="../../../../assets/ahorcado/{{numeroErrorImg}}.jpg" class="img-fluid" alt="imagen-ahorcado">
+    <div *ngIf="this.comenzo" >
+        <h5 class="text-center" class="m-3">Tiempo: {{tiempoGral}}s</h5>
+        <h5>Puntos: {{puntos}}</h5>
+        <div class="container-medio">
+            <div class="contenedor-img">
+                <img src="../../../../assets/ahorcado/{{numeroErrorImg}}.jpg" class="img-fluid" alt="imagen-ahorcado">
+            </div>
+            
+            <div class="contenedor-palabraEnGuiones">
+                <label class="">{{palabraEnGuiones}}</label> 
+            </div>
         </div>
-
-        <div class="contenedor-palabraEnGuiones">
-            <label class="">{{palabraEnGuiones}}</label> 
+        <div *ngIf="this.msjAccion" [className]="this.adivino ? 'alert alert-success' : 'alert alert-danger'" role="alert">
+            {{this.msjAccion}}
+        </div>
+        <div class="container text-center container-teclado">
+            <input type="button" *ngFor="let letra of letras" class="btn alert-primary col-sm-1 text-center m-lg-1" (click)="onLetra(letra)" value="{{letra}}">
         </div>
     </div>
-    <div *ngIf="this.msjAccion" [className]="this.adivino ? 'alert alert-success' : 'alert alert-danger'" role="alert">
-        {{this.msjAccion}}
-    </div>
-    <div class="container text-center container-teclado">
-        <input type="button" *ngFor="let letra of letras" class="btn alert-primary col-sm-1 text-center m-lg-1" (click)="onLetra(letra)" value="{{letra}}">
+    <div *ngIf="this.msjPuntos && !this.comenzo" class="alert alert-primary text-center mt-3" role="alert">
+        {{this.msjPuntos}}
     </div>
     
-    <div class="container text-center mt-2">
+    <!-- <div class="container text-center mt-2">
         <button class="w-50 btn btn-lg btn-secondary mb-1" type="submit" (click)="setearJuego()">Reiniciar</button>
+    </div> -->
+    <div *ngIf="!this.comenzo" class="container text-center mt-2">
+        <button [className]="'btn btn-success btn-respuesta'" (click)="comenzar()">Comenzar</button>
     </div>
+
+    <table *ngIf="!this.comenzo" class="table table-bordered table-striped mb-0" style="margin-top:10px">
+        <thead class="">
+            <tr class="table-dark">
+                <th scope="col">Usuario</th>
+                <th scope="col">Puntaje</th>
+                <th scope="col">Fecha</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr class="table-light" *ngFor="let item of puntajes">
+                <td>{{item.emailUsuario}}</td>
+                <td>{{item.puntos}}</td>
+                <td>{{item.fecha}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <div *ngIf="!this.comenzo">
+        <app-tabla-puntaje [puntajes]="this.puntajes" ></app-tabla-puntaje>
+    </div> -->
 
 </div>
 

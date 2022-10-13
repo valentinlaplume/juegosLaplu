@@ -1,0 +1,17 @@
+<table class="table table-bordered table-striped mb-0">
+    <thead class="">
+        <tr class="table-dark">
+            <th scope="col">Usuario</th>
+            <th scope="col">Puntaje</th>
+            <th scope="col">Fecha</th>
+        </tr>
+    </thead>
+    <tbody >
+        <tr class="table-light" *ngFor="let item of puntajes">
+            <td>{{item.emailUsuario}}</td>
+            <td>{{item.puntos}}</td>
+            <td>{{item.fecha}}</td>
+        </tr>
+    </tbody>
+</table>
+

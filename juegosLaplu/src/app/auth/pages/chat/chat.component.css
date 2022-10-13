@@ -5,3 +5,15 @@
 .chat-otro{
     background-color: rgb(133, 207, 133);
 }
+
+.scrollbar{
+    position: relative;
+    max-height:430px;
+    overflow: auto;
+}
+
+@media (max-width: 500) {
+    .scrollbar{
+        max-height:430px!important;
+    }
+}   

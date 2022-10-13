@@ -3,10 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { 
-    path:'home', 
-    loadChildren: () => import ('./home/home.module').then(res => res.HomeModule) 
-  },
-  { 
     path:'', 
     loadChildren: () => import ('./home/home.module').then(res => res.HomeModule) 
   },
@@ -18,6 +14,7 @@ const routes: Routes = [
     path: 'juegos', 
     loadChildren: () => import ('./juegos/juegos.module').then(res => res.JuegosModule) 
   },
+  
   //{ path:'error', component: ErrorComponent},
   //{ path:'**', redirectTo: 'home'}
 ];

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Puntaje } from 'src/app/shared/puntaje';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { PuntajeService } from "../../../services/puntaje.service";
 @Component({
   selector: 'app-ahorcado',
   templateUrl: './ahorcado.component.html',
@@ -7,8 +10,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AhorcadoComponent implements OnInit {
   adivino:boolean = false;
-  msjAccion:string='';
   letras!:string[]; 
+  comenzo:boolean = false;
 
   palabrasAdivinar = ['futbol', 'mate', 'auto', 'programador', 'celular', 'computadora', 'mouse', 'gimnasio', 'universidad', 'trabajo'];
   palabraEnLetras:string = '';
@@ -18,12 +21,88 @@ export class AhorcadoComponent implements OnInit {
   gano:boolean = false;
   perdio:boolean = false;
   
-  constructor() {
+  puntos:number = 10;
+  puntosConseguir:number = 10;
+  msjAccion:string='';
+  msjPuntos:string = '';
+
+  mailUsuarioLogeado:string = '';
+  idUsuarioLogeado:string = '';
+
+  // tiempo de juego general
+  segundosGral:number = 5;
+  tiempoGral:number = 0;
+  intervalGral:any;
+
+  puntajes!:Puntaje[];
+  public usuario$: Observable<any> = this.authService.afAuth.user;
+
+  constructor(
+    public authService: AuthService,
+    public puntajeService: PuntajeService
+    ) 
+  {
+    this.puntajeService.cargarPuntajesAhorcado();
+    this.usuario$.subscribe(res => {
+      this.mailUsuarioLogeado = res['email'];
+      this.idUsuarioLogeado = res['uid'];
+    });
+    
+    this.cargarPuntajes();
+  }
+
+cargarPuntajes()
+{
+  this.puntajes = []; 
+  this.puntajeService.puntajes.subscribe(puntaje => {
+    this.puntajes = puntaje;
+  })
+}
+
+  ngOnInit(): void { }
+
+  comenzar(){
+    this.tiempoGral = this.segundosGral;
+    this.onCronometro();
+    this.comenzo = true;
     this.setearPalabra();
     this.setearLetras();
   }
-  
-  ngOnInit(): void { }
+  finalizar(){
+    this.pauseTimer(this.intervalGral);
+    this.addPuntaje();
+
+    this.comenzo = false;
+    this.msjPuntos = 'Has conseguido '+this.puntos+' puntos';
+    this.msjAccion = '';
+    this.puntos = 0;
+  }
+
+  addPuntaje(){
+    const puntaje = new Puntaje();
+    puntaje.idUsuario= this.idUsuarioLogeado;
+    puntaje.emailUsuario= this.mailUsuarioLogeado;
+    puntaje.puntos= this.puntos;
+    puntaje.fecha= new Date().toLocaleString();
+    console.log(puntaje)
+    this.puntajeService.addPuntaje(puntaje, this.puntajeService.collectionAhorcado);
+  }
+
+  pauseTimer(interval:any) { 
+    clearInterval(interval); 
+  }
+  onCronometro(){
+    this.intervalGral = setInterval(() => {
+      if(this.tiempoGral == 0)
+      {
+        this.finalizar();
+      }
+      else{
+        this.tiempoGral--;
+      }
+    }, 1000);
+  }
+
 
   private setearLetras(){
     this.letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -94,7 +173,7 @@ export class AhorcadoComponent implements OnInit {
       this.sumarErrorImg(); 
       if(this.numeroErrorImg == 7) { 
         this.adivino = false; 
-        this.msjAccion = "PERDISTE, PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
+        this.msjAccion = "PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
         this.setearJuego(); 
         return; 
       }
@@ -104,7 +183,8 @@ export class AhorcadoComponent implements OnInit {
     if(!this.palabraEnGuiones.includes('_')) 
     { 
       this.adivino = true; 
-      this.msjAccion = "GANASTE, PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
+      this.msjAccion = "ADIVINASTE! PALABRA CORRECTA: " + this.palabrasAdivinar[this.indicePalabra].toLocaleUpperCase(); 
+      this.puntos+= this.puntosConseguir;
       this.setearJuego(); 
     }
   }

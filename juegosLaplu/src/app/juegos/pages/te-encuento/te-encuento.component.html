@@ -1,0 +1,29 @@
+<h1 class="text-center m-3">Te Encuentro</h1>
+<div *ngIf="this.comenzo" class="container text-center">
+    <h5>Puntos: {{puntos}}</h5>
+    <h5 class="text-center" class="m-3">Tiempo juego: {{tiempoGral}}s</h5>
+    <div *ngIf="this.msjAccion" [className]="this.adivino ? 'alert alert-success' : 'alert alert-danger'" role="alert">
+        {{this.msjAccion}}
+    </div>
+    <div class="container text-center container-teclado">
+        <input 
+            type="button" 
+            [disabled]='this.pausa'
+            *ngFor="let cara of listCaritas" 
+            [className]="this.cambioCarita ? 'btn-redondo col-sm-1 text-center m-lg-1 cambioCarita1' : 'btn-redondo col-sm-1 text-center m-lg-1 cambioCarita2'" 
+            (click)="onClick(cara)" 
+            value="{{cara}}"
+        >
+    </div>
+    <!-- <h6 class="text-center" class="m-3">Tiempo jugada: {{tiempo}}s</h6> -->
+</div>
+<div *ngIf="!this.comenzo && this.msjPuntos" class="alert alert-primary text-center mt-3" role="alert">
+    {{this.msjPuntos}}
+</div>
+<div *ngIf="!this.comenzo" class="container text-center mt-2">
+    <button [className]="'btn btn-success btn-respuesta'" (click)="comenzar()">Comenzar</button>
+</div>
+
+<style>
+
+</style>

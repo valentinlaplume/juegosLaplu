@@ -5,14 +5,17 @@ import { JuegosRoutingModule } from './juegos-routing.module';
 import { AhorcadoComponent } from './pages/ahorcado/ahorcado.component';
 import { MayorOMenorComponent } from './pages/mayor-omenor/mayor-omenor.component';
 import { FormsModule } from '@angular/forms';
-import { PreguntadosComponent } from './preguntados/preguntados.component';
-
+import { PreguntadosComponent } from './pages/preguntados/preguntados.component';
+import { TeEncuentoComponent } from './pages/te-encuento/te-encuento.component';
+import { TablaPuntajeComponent } from './components/tabla-puntaje/tabla-puntaje.component';
 
 @NgModule({
   declarations: [
     AhorcadoComponent,
     MayorOMenorComponent,
-    PreguntadosComponent
+    PreguntadosComponent,
+    TeEncuentoComponent,
+    TablaPuntajeComponent
   ],
   imports: [
     CommonModule,
