@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EncuestaComponent } from './pages/encuesta/encuesta.component';
 import { HomeComponent } from './pages/home/home.component';
 import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
+import { VerEncuestasComponent } from './pages/ver-encuestas/ver-encuestas.component';
 
 const routes: Routes = [
   { path: '',
@@ -10,6 +11,7 @@ const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'quienSoy', component: QuienSoyComponent },
     { path: 'encuesta', component: EncuestaComponent },
+    { path: 'verEncuestas', component: VerEncuestasComponent },
   ]
 }
 ];

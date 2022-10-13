@@ -29,4 +29,9 @@ export class EncuestaService {
       fecha: new Date().toLocaleDateString()
     });
   }
+
+  cargarEncuestas(){
+    this.encuestaCollection = this.db.collection<any>(this.dbPath, ref => ref.orderBy('fecha','desc'));
+    return this.encuestaCollection.snapshotChanges();
+ }
 }

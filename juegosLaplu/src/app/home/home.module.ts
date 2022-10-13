@@ -6,13 +6,15 @@ import { HomeComponent } from './pages/home/home.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
 import { EncuestaComponent } from './pages/encuesta/encuesta.component';
+import { VerEncuestasComponent } from './pages/ver-encuestas/ver-encuestas.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     QuienSoyComponent,
-    EncuestaComponent
+    EncuestaComponent,
+    VerEncuestasComponent
   ],
   imports: [
     CommonModule,
