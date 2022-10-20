@@ -26,14 +26,13 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   msjAccion:string='';
   msjPuntos:string = '';
 
-  mailUsuarioLogeado:string = '';
-  idUsuarioLogeado:string = '';
-
   // tiempo de juego general
   segundosGral:number = 30;
   tiempoGral:number = 0;
   intervalGral:any;
 
+  mailUsuarioLogeado:string = '';
+  idUsuarioLogeado:string = '';
   puntajes!:Puntaje[];
   puntajesTop!:Puntaje[];
   public usuario$: Observable<any> = this.authService.afAuth.user;

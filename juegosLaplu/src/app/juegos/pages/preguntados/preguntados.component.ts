@@ -1,8 +1,10 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { observable, Subscription } from 'rxjs';
 import { CocktailService } from "../../../services/cocktail.service";
-
+import { Observable, Subscription } from 'rxjs';
+import { Puntaje } from 'src/app/shared/puntaje';
+import { AuthService } from '../../../services/auth.service';
+import { PuntajeService } from "../../../services/puntaje.service";
 @Component({
   selector: 'app-preguntados',
   templateUrl: './preguntados.component.html',
@@ -32,7 +34,42 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   tiempoGral:number = 0;
   intervalGral:any;
 
-  constructor(public cocktailService:CocktailService) { 
+    //puntaje
+    mailUsuarioLogeado:string = '';
+    idUsuarioLogeado:string = '';
+  
+    puntajes!:Puntaje[];
+    puntajesTop!:Puntaje[];
+    public usuario$: Observable<any> = this.authService.afAuth.user;
+    suscripciones!:Subscription[]; 
+
+  constructor(public cocktailService:CocktailService,
+    public authService: AuthService,
+    public puntajeService: PuntajeService) { 
+    this.listSubscription = [];
+    this.suscripciones = [];
+    this.cargarPuntajes();
+
+    this.usuario$.subscribe(res => {
+      this.mailUsuarioLogeado = res['email'];
+      this.idUsuarioLogeado = res['uid'];
+    });
+  }
+
+  cargarPuntajes()
+  {
+    this.suscripciones.push(this.puntajeService.cargarPuntajesPreguntados().subscribe(snapshot => {
+      this.puntajes = [];
+      this.puntajesTop = [];
+      snapshot.forEach((item: any) => {
+        const data = item.payload.doc.data() as Puntaje;
+        data.id = item.payload.doc.id;
+        this.puntajes.push(data);
+        if(this.puntajes.length > 0){
+          this.puntajesTop = this.puntajes.slice(0, 10);
+        }
+      })
+    }))
   }
 
   ngOnInit(): void {
@@ -40,6 +77,9 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.finalizar();
+    this.suscripciones.forEach(observable =>{
+      observable.unsubscribe();
+    })
   }
 
   comenzar(){
@@ -69,16 +109,29 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   }
 
   finalizar(){
+    this.pauseTimer(this.intervalGral);
+    this.addPuntaje();
+
     this.comenzo = false;
     this.msjPuntos = 'Has conseguido '+this.puntos+'/15 puntos';
     this.listCocktail = [];
     this.puntos = 0;
     this.pathImg = '';
-    this.pauseTimer(this.intervalGral);
     this.listSubscription.forEach(observable =>{
       observable.unsubscribe();
     })
   }
+
+  addPuntaje(){
+    const puntaje = new Puntaje();
+    puntaje.idUsuario= this.idUsuarioLogeado;
+    puntaje.emailUsuario= this.mailUsuarioLogeado;
+    puntaje.puntos= this.puntos;
+    puntaje.fecha= new Date().toLocaleString();
+    console.log(puntaje)
+    this.puntajeService.addPuntaje(puntaje, this.puntajeService.collectionPreguntados);
+  }
+
 
 
 

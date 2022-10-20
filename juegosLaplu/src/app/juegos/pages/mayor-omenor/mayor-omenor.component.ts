@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { Observable, Subscription } from 'rxjs';
+import { Puntaje } from 'src/app/shared/puntaje';
+import { AuthService } from '../../../services/auth.service';
+import { PuntajeService } from "../../../services/puntaje.service";
 @Component({
   selector: 'app-mayor-omenor',
   templateUrl: './mayor-omenor.component.html',
   styleUrls: ['./mayor-omenor.component.css']
 })
-export class MayorOMenorComponent implements OnInit {
+export class MayorOMenorComponent implements OnInit, OnDestroy {
   cambioCarta:boolean = false;
   adivino:boolean = false;
   
@@ -33,13 +36,52 @@ export class MayorOMenorComponent implements OnInit {
   tiempoGral:number = 0;
   intervalGral:any;
 
-  constructor() { 
+  //puntaje
+  mailUsuarioLogeado:string = '';
+  idUsuarioLogeado:string = '';
+
+  puntajes!:Puntaje[];
+  puntajesTop!:Puntaje[];
+  public usuario$: Observable<any> = this.authService.afAuth.user;
+  suscripciones!:Subscription[]; 
+
+  constructor(
+    public authService: AuthService,
+    public puntajeService: PuntajeService
+    ) 
+  {
+    this.suscripciones = [];
+    this.cargarPuntajes();
+
+    this.usuario$.subscribe(res => {
+      this.mailUsuarioLogeado = res['email'];
+      this.idUsuarioLogeado = res['uid'];
+    });
+  }
+
+  cargarPuntajes()
+  {
+    this.suscripciones.push(this.puntajeService.cargarPuntajesMayorOMenor().subscribe(snapshot => {
+      this.puntajes = [];
+      this.puntajesTop = [];
+      snapshot.forEach((item: any) => {
+        const data = item.payload.doc.data() as Puntaje;
+        data.id = item.payload.doc.id;
+        this.puntajes.push(data);
+        if(this.puntajes.length > 0){
+          this.puntajesTop = this.puntajes.slice(0, 10);
+        }
+      })
+    }))
   }
 
   ngOnInit(): void {
   }
 
-  OnDestroy(){
+  ngOnDestroy(): void {
+    this.suscripciones.forEach(observable =>{
+      observable.unsubscribe();
+    })
   }
 
   private getNewIndexNumber():number {
@@ -61,12 +103,24 @@ export class MayorOMenorComponent implements OnInit {
   }
 
   finalizar(){
-    this.comenzo = false;
     this.pauseTimer(this.intervalGral);
+    this.addPuntaje();
+
+    this.comenzo = false;
     this.msjPuntos = 'Has conseguido '+this.puntos+' puntos';
     this.msjAccion = '';
     this.puntos = 0;
     this.cartaAnterior = '';
+  }
+
+  addPuntaje(){
+    const puntaje = new Puntaje();
+    puntaje.idUsuario= this.idUsuarioLogeado;
+    puntaje.emailUsuario= this.mailUsuarioLogeado;
+    puntaje.puntos= this.puntos;
+    puntaje.fecha= new Date().toLocaleString();
+    console.log(puntaje)
+    this.puntajeService.addPuntaje(puntaje, this.puntajeService.collectionMayorOMenor);
   }
 
   pauseTimer(interval:any) { 

@@ -65,10 +65,10 @@
             <div class="col-12">
                 <select class="custom-select custom-select-lg mb-3" formControlName="pregUno">
                     <option selected value="">Selecciona una opción</option>
-                    <option value="ahorcado">Ahorcado</option>
-                    <option value="flechas">Flechas</option>
-                    <option value="mayoromenor">Mayor o Menor</option>
-                    <option value="preguntados">Preguntados</option>
+                    <option value="Ahorcado">Ahorcado</option>
+                    <option value="TeEncuentro">Te Encuentro</option>
+                    <option value="MayorOMenor">Mayor o Menor</option>
+                    <option value="Preguntados">Preguntados</option>
                 </select>
 
                 <span class="text-danger"
@@ -116,8 +116,11 @@
             </div>
         </div>
 
-
+        <div class="form-floating mb-4" *ngIf="this.msjEnviado">
+            <span class="text-succes">{{this.msjEnviado}}</span>
+        </div>
         <br>
-        <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Enviar</button>
+        <button *ngIf="!this.msjEnviado" type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Enviar</button>
+        <br>
     </form>
 </div>

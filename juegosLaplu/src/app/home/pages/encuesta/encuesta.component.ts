@@ -12,7 +12,7 @@ import { Usuario } from 'src/app/shared/usuario';
   styleUrls: ['./encuesta.component.css']
 })
 export class EncuestaComponent implements OnInit {
-
+  msjEnviado:string = '';
   public formulario!: FormGroup;
   usuario: Usuario = new Usuario();
   public usuario$: Observable<any> = this.auth.afAuth.user;
@@ -52,7 +52,11 @@ export class EncuestaComponent implements OnInit {
     const pregTres = this.formulario.controls['pregTres'].value;
     
     this.encuestaSvc.addEncuesta(this.usuario.id, this.usuario.email, nombre, apellido, edad, telefono, pregUno, pregDos, pregTres);
-    this.router.navigate(['home']);
+    this.msjEnviado = 'Tu encuesta fue enviada.';
+    setTimeout(() => {
+      this.msjEnviado = '';
+      this.router.navigate(['home']);
+    }, 2000);
   }
 
   validarNombre(control: AbstractControl){
