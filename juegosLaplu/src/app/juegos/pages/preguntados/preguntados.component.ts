@@ -132,9 +132,6 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
     this.puntajeService.addPuntaje(puntaje, this.puntajeService.collectionPreguntados);
   }
 
-
-
-
   async getCocktailRandom(){
     this.listCocktail = [];
     this.listSubscription = [];
